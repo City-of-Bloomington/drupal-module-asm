@@ -16,10 +16,18 @@
 # You should have received a copy of the GNU General Public License
 # along with the ASM module.  If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0/>.
 ---
-name: Animal Shelter Manager
-description: Integration with the Animal Shelter Manager web application
-package: COB
-type: module
-core: 8.x
-configure: asm.settings
+asm.settings:
+  path: '/admin/config/asm/settings'
+  defaults:
+    _form: '\Drupal\asm\Form\SettingsForm'
+    _title: 'Animal Shelter Manager Settings'
+  requirements:
+    _permission: 'administer site configuration'
+asm.animals:
+  path: 'asm/animals'
+  defaults:
+    _controller: '\Drupal\asm\Controller\ASMController::animals'
+    _title: 'Adoptable Animals'
+  requirements:
+    _permission: 'access content'
 ...

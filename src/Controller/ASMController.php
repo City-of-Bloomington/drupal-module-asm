@@ -18,39 +18,18 @@
  * You should have received a copy of the GNU General Public License
  * along with the ASM module.  If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0/>.
  */
-use Drupal\Core\Routing\RouteMatchInterface;
+namespace Drupal\asm\Controller;
+
+use Drupal\Core\Controller\ControllerBase;
 use Drupal\asm\ASMGateway;
 
-/**
- * @implements hook_help()
- */
-function asm_help($route_name, RouteMatchInterface $route_match)
+class ASMController extends ControllerBase
 {
-    switch ($route_name) {
-        case 'help.page.asm':
-            return "<h2>Animal Shelter Manager Help</h2>";
-        break;
+    public function animals()
+    {
+        return [
+            '#theme'   => 'asm_animals',
+            '#animals' => ASMGateway::animals()
+        ];
     }
-}
-
-/**
- * @implements hook_theme()
- * @see https://api.drupal.org/api/drupal/core!lib!Drupal!Core!Render!theme.api.php/function/hook_theme/8.2.x
- */
-function asm_theme($existing, $type, $theme, $path)
-{
-    return [
-        'asm_animals' => [
-            'template'  => 'asm_animals',
-            'variables' => [
-                'animals' => []
-            ]
-        ],
-        'asm_animal' => [
-            'template'  => 'asm_animal',
-            'variables' => [
-                'animal' => []
-            ]
-        ]
-    ];
 }

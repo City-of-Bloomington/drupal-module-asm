@@ -1,5 +1,11 @@
-<?php
+{#
 /**
+ * @file
+ * Displays the list of Adoptable Animals from Shelter Manager
+ *
+ * Available variables
+ * - animals: The animals JSON data from Shelter Manager
+ *
  * @copyright 2017 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/old-licenses/gpl-2.0 GNU/GPL2, see LICENSE
  *
@@ -18,39 +24,14 @@
  * You should have received a copy of the GNU General Public License
  * along with the ASM module.  If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0/>.
  */
-use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\asm\ASMGateway;
-
-/**
- * @implements hook_help()
- */
-function asm_help($route_name, RouteMatchInterface $route_match)
-{
-    switch ($route_name) {
-        case 'help.page.asm':
-            return "<h2>Animal Shelter Manager Help</h2>";
-        break;
-    }
-}
-
-/**
- * @implements hook_theme()
- * @see https://api.drupal.org/api/drupal/core!lib!Drupal!Core!Render!theme.api.php/function/hook_theme/8.2.x
- */
-function asm_theme($existing, $type, $theme, $path)
-{
-    return [
-        'asm_animals' => [
-            'template'  => 'asm_animals',
-            'variables' => [
-                'animals' => []
-            ]
-        ],
-        'asm_animal' => [
-            'template'  => 'asm_animal',
-            'variables' => [
-                'animal' => []
-            ]
-        ]
-    ];
-}
+#}
+<section>
+    <header>
+        <h2>Adoptable Animals</h2>
+    </header>
+    {% for a in animals %}
+    <article class="{{ a.speciesname }}">
+        <header><h3>{{ a.animalname }}</h3></header>
+    </article>
+    {% endfor %}
+</section>
