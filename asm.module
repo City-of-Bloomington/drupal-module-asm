@@ -1,0 +1,36 @@
+<?php
+/**
+ * @copyright 2017 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ */
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\asm\ASMGateway;
+
+/**
+ * @implements hook_help()
+ */
+function asm_help($route_name, RouteMatchInterface $route_match)
+{
+    switch ($route_name) {
+        case 'help.page.asm':
+            return "<h2>Animal Shelter Manager Help</h2>";
+        break;
+    }
+}
+
+/**
+ * @implements hook_theme()
+ * @see https://api.drupal.org/api/drupal/core!lib!Drupal!Core!Render!theme.api.php/function/hook_theme/8.2.x
+ */
+function asm_theme($existing, $type, $theme, $path)
+{
+    return [
+        'asm_animals' => [
+            'variables' => []
+        ],
+        'asm_animal' => [
+            'variables' => []
+        ]
+    ];
+}
+

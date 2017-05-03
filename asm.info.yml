@@ -1,0 +1,6 @@
+name: Animal Shelter Manager
+description: Integration with the Animal Shelter Manager web application
+package: COB
+type: module
+core: 8.x
+configure: asm.settings
