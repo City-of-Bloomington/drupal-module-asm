@@ -30,7 +30,7 @@ class ASMGateway
      */
     private static function doJsonQuery($url)
     {
-        $client   = \Drupal::httpClient();
+        $client = \Drupal::httpClient();
         try {
             $response = $client->get($url);
             return json_decode($response->getBody(), true);
@@ -51,14 +51,22 @@ class ASMGateway
             'method'   => 'json_adoptable_animals',
             'username' => $config->get('asm_user'),
             'password' => $config->get('asm_pass')
-        ]);
+        ], '', '&');
         return self::doJsonQuery($url);
     }
 
     /**
-     * @return array The JSON data from the response
+     * @param  int   $animal_id The Animal ID
+     * @return array            The JSON data from the response
      */
-    public static function animal()
+    public static function animal($animal_id)
     {
+        $config = \Drupal::config('asm.settings');
+        $ASM    = $config->get('asm_url');
+        $url    = $ASM.'/service?'.http_build_query([
+            'method'   => 'animal_json',
+            'animalid' => (int)$animal_id
+        ], '', '&');
+        return self::doJsonQuery($url);
     }
 }

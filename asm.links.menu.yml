@@ -17,26 +17,8 @@
 # along with the ASM module.  If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0/>.
 ---
 asm.settings:
-  path: '/admin/config/asm/settings'
-  defaults:
-    _form: '\Drupal\asm\Form\SettingsForm'
-    _title: 'Animal Shelter Manager Settings'
-  requirements:
-    _permission: 'administer site configuration'
-
-asm.animal:
-  path: 'asm/animals/{animal_id}'
-  defaults:
-    _controller: '\Drupal\asm\Controller\ASMController::animal'
-    _title: 'Animal'
-  requirements:
-    _permission: 'access content'
-
-asm.animals:
-  path: 'asm/animals'
-  defaults:
-    _controller: '\Drupal\asm\Controller\ASMController::animals'
-    _title: 'Adoptable Animals'
-  requirements:
-    _permission: 'access content'
+  title: 'Animal Shelter Manager Settings'
+  description: 'Settings for the ASM Module'
+  parent: system.admin_config_services
+  route_name: asm.settings
 ...

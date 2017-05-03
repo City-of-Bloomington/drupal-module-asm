@@ -1,10 +1,10 @@
 {#
 /**
  * @file
- * Displays the list of Adoptable Animals from Shelter Manager
+ * Displays an animal from the Animal Shelter Manager
  *
  * Available variables
- * - animals: The animals JSON data from Shelter Manager
+ * - animal: The animal data from JSON
  *
  * @copyright 2017 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/old-licenses/gpl-2.0 GNU/GPL2, see LICENSE
@@ -25,18 +25,12 @@
  * along with the ASM module.  If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0/>.
  */
 #}
-<section class="asm_animals">
-    <header>
-        <h2>Adoptable Animals</h2>
-    </header>
-    {% for a in animals %}
-    <a href="{{ path('asm.animal', {'animal_id': a.ID}) }}">
-        <article class="{{ a.SPECIESNAME }}">
-            <header><h3>{{ a.ANIMALNAME }}</h3></header>
-            {% if a.WEBSITEIMAGECOUNT %}
-            <img src="/service?method=animal_image;animalid={{ a.ID }}" />
-            {% endif %}
-        </article>
-    </a>
-    {% endfor %}
+<section class="asm_animal">
+    <header><h2>{{ animal.ANIMALNAME }}</h2></header>
+    <ul><li>{{ animal.SPECIESNAME }}</li>
+        <li>{{ animal.BREEDNAME }}</li>
+        <li>{{ animal.SEXNAME }}</li>
+        <li>{{ animal.AGEGROUP }}</li>
+        <li>{{ animal.SIZENAME }}</li>
+    </ul>
 </section>

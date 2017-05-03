@@ -32,4 +32,12 @@ class ASMController extends ControllerBase
             '#animals' => ASMGateway::animals()
         ];
     }
+
+    public  function animal($animal_id)
+    {
+        return [
+            '#theme' => 'asm_animal',
+            '#animal' => ASMGateway::animal($animal_id)
+        ];
+    }
 }
