@@ -63,6 +63,12 @@ class SettingsForm extends ConfigFormBase
             '#title'         => 'Password',
             '#default_value' => $config->get('asm_pass')
         ];
+        $form['asm_proxy'] = [
+            '#type'          => 'checkbox',
+            '#title'         => 'Proxy Images',
+            '#default_value' => $config->get('asm_proxy') ? true : false,
+            '#description'   => 'If Shelter Manager is behind a firewall, you can check this to have the ASM module proxy image requests'
+        ];
 
         return parent::buildForm($form, $form_state);
     }
@@ -73,9 +79,10 @@ class SettingsForm extends ConfigFormBase
     public function submitForm(array &$form, FormStateInterface $form_state)
     {
         $this->config('asm.settings')
-             ->set('asm_url',  $form_state->getValue('asm_url' ))
-             ->set('asm_user', $form_state->getValue('asm_user'))
-             ->set('asm_pass', $form_state->getValue('asm_pass'))
+             ->set('asm_url',   $form_state->getValue('asm_url' ))
+             ->set('asm_user',  $form_state->getValue('asm_user'))
+             ->set('asm_pass',  $form_state->getValue('asm_pass'))
+             ->set('asm_proxy', $form_state->getValue('asm_proxy') ? 1 : 0)
              ->save();
 
         parent::submitForm($form, $form_state);

@@ -24,6 +24,13 @@ asm.settings:
   requirements:
     _permission: 'administer site configuration'
 
+asm.image:
+  path: 'asm/animals/{animal_id}/image'
+  defaults:
+    _controller: '\Drupal\asm\Controller\ASMController::image'
+  requirements:
+    _permission: 'access content'
+
 asm.animal:
   path: 'asm/animals/{animal_id}'
   defaults:

@@ -5,6 +5,8 @@
  *
  * Available variables
  * - animals: The animals JSON data from Shelter Manager
+ * - asm_url: Base URL for Shelter Manager
+ * - proxy:   Whether to proxy images, or not
  *
  * @copyright 2017 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/old-licenses/gpl-2.0 GNU/GPL2, see LICENSE
@@ -34,7 +36,11 @@
         <article class="{{ a.SPECIESNAME }}">
             <header><h3>{{ a.ANIMALNAME }}</h3></header>
             {% if a.WEBSITEIMAGECOUNT %}
-            <img src="/service?method=animal_image;animalid={{ a.ID }}" />
+                {% if proxy %}
+                    <img src="{{ path('asm.image', {'animal_id': a.ID}) }}" />
+                {% else %}
+                    <img src="{{ asm_url }}/service?method=animal_image;animalid={{ a.ID }}" />
+                {% endif %}
             {% endif %}
         </article>
     </a>

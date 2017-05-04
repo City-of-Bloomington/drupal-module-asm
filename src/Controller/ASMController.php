@@ -20,24 +20,58 @@
  */
 namespace Drupal\asm\Controller;
 
-use Drupal\Core\Controller\ControllerBase;
 use Drupal\asm\ASMGateway;
+use Drupal\Core\Controller\ControllerBase;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ASMController extends ControllerBase
 {
+    const PROXY_CACHE = '/tmp/asm';
+
     public function animals()
     {
         return [
             '#theme'   => 'asm_animals',
-            '#animals' => ASMGateway::animals()
+            '#animals' => ASMGateway::animals(),
+            '#asm_url' => ASMGateway::getUrl(),      // Set in module configuration
+            '#proxy'   => ASMGateway::enableProxy()  // True or False, based on configuration
         ];
     }
 
-    public  function animal($animal_id)
+    public function animal($animal_id)
     {
         return [
             '#theme' => 'asm_animal',
             '#animal' => ASMGateway::animal($animal_id)
         ];
+    }
+
+    public function image($animal_id)
+    {
+        $animal_id = (int)$animal_id;
+        $cacheFile = self::PROXY_CACHE."/$animal_id";
+
+        if (!is_file($cacheFile)) {
+            if (!is_dir(self::PROXY_CACHE)) {
+                  mkdir(self::PROXY_CACHE);
+            }
+
+            $url = ASMGateway::getUrl()."/service?method=animal_image&animalid=$animal_id";
+            try {
+                $client = \Drupal::httpClient();
+                $response = $client->request('GET', $url, ['sink'=>$cacheFile]);
+            }
+            catch (\Exception $e) {
+                print_r($e);
+                exit();
+            }
+        }
+
+        $info = new \finfo(FILEINFO_MIME);
+        $headers['Content-Type'  ] = $info->file($cacheFile);
+        $headers['Content-Length'] =    filesize($cacheFile);
+
+        return new BinaryFileResponse($cacheFile, 200, $headers);
     }
 }

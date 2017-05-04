@@ -43,7 +43,9 @@ function asm_theme($existing, $type, $theme, $path)
         'asm_animals' => [
             'template'  => 'asm_animals',
             'variables' => [
-                'animals' => []
+                'animals' => [],
+                'asm_url' => null,
+                'proxy'   => false
             ]
         ],
         'asm_animal' => [

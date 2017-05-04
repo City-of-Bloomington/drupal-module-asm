@@ -27,6 +27,13 @@
 #}
 <section class="asm_animal">
     <header><h2>{{ animal.ANIMALNAME }}</h2></header>
+    {% if a.WEBSITEIMAGECOUNT %}
+        {% if proxy %}
+            <img src="{{ path('asm.image', {'animal_id': a.ID}) }}" />
+        {% else %}
+            <img src="{{ asm_url }}/service?method=animal_image;animalid={{ a.ID }}" />
+        {% endif %}
+    {% endif %}
     <ul><li>{{ animal.SPECIESNAME }}</li>
         <li>{{ animal.BREEDNAME }}</li>
         <li>{{ animal.SEXNAME }}</li>

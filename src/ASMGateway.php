@@ -24,6 +24,9 @@ use Drupal\Core\Site\Settings;
 
 class ASMGateway
 {
+    public static function getUrl()      { return \Drupal::config('asm.settings')->get('asm_url'); }
+    public static function enableProxy() { return \Drupal::config('asm.settings')->get('asm_proxy') ? true : false; }
+
     /**
      * @param  string $url
      * @return array        The JSON data
