@@ -42,8 +42,10 @@ class ASMController extends ControllerBase
     public function animal($animal_id)
     {
         return [
-            '#theme' => 'asm_animal',
-            '#animal' => ASMGateway::animal($animal_id)
+            '#theme'   => 'asm_animal',
+            '#animal'  => ASMGateway::animal($animal_id),
+            '#asm_url' => ASMGateway::getUrl(),      // Set in module configuration
+            '#proxy'   => ASMGateway::enableProxy()  // True or False, based on configuration
         ];
     }
 
@@ -63,8 +65,7 @@ class ASMController extends ControllerBase
                 $response = $client->request('GET', $url, ['sink'=>$cacheFile]);
             }
             catch (\Exception $e) {
-                print_r($e);
-                exit();
+                throw new NotFoundHttpException();
             }
         }
 
