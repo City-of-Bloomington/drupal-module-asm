@@ -42,10 +42,12 @@ class BreadcrumbBuilder implements BreadcrumbBuilderInterface
 
         $config  = \Drupal::config('asm.settings');
         $nids    = explode(',', $config->get('asm_breadcrumb'));
-        $storage = \Drupal::entityTypeManager()->getStorage('node');
-        $nodes   = $storage->loadMultiple($nids);
+        $nodes   = \Drupal::entityTypeManager()->getStorage('node')->loadMultiple($nids);
         foreach ($nodes as $n) {
             $breadcrumb->addLink(Link::createFromRoute($n->title->value, 'entity.node.canonical', ['node'=>$n->nid->value]));
+        }
+        if ($action == 'animal') {
+            $breadcrumb->addLink(Link::createFromRoute('Animals', 'asm.animals'));
         }
 
         return $breadcrumb;
