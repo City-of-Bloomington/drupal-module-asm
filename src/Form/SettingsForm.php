@@ -69,6 +69,12 @@ class SettingsForm extends ConfigFormBase
             '#default_value' => $config->get('asm_proxy') ? true : false,
             '#description'   => 'If Shelter Manager is behind a firewall, you can check this to have the ASM module proxy image requests'
         ];
+        $form['asm_breadcrumb'] = [
+            '#type'          => 'textfield',
+            '#title'         => 'Breadcrumbs',
+            '#default_value' => $config->get('asm_breadcrumb'),
+            '#description'   => 'Enter node IDs, separated by commas, to be used as the base breadcrumb for ASM routes'
+        ];
 
         return parent::buildForm($form, $form_state);
     }
@@ -79,10 +85,11 @@ class SettingsForm extends ConfigFormBase
     public function submitForm(array &$form, FormStateInterface $form_state)
     {
         $this->config('asm.settings')
-             ->set('asm_url',   $form_state->getValue('asm_url' ))
-             ->set('asm_user',  $form_state->getValue('asm_user'))
-             ->set('asm_pass',  $form_state->getValue('asm_pass'))
-             ->set('asm_proxy', $form_state->getValue('asm_proxy') ? 1 : 0)
+             ->set('asm_url',        $form_state->getValue('asm_url' ))
+             ->set('asm_user',       $form_state->getValue('asm_user'))
+             ->set('asm_pass',       $form_state->getValue('asm_pass'))
+             ->set('asm_proxy',      $form_state->getValue('asm_proxy') ? 1 : 0)
+             ->set('asm_breadcrumb', $form_state->getValue('asm_breadcrumb'))
              ->save();
 
         parent::submitForm($form, $form_state);
