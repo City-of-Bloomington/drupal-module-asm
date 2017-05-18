@@ -31,6 +31,7 @@
     <header>
         <h2>Adoptable Animals</h2>
     </header>
+    {{ form }}
     {% for a in animals %}
     <a href="{{ path('asm.animal', {'animal_id': a.ID}) }}">
         <article class="{{ a.SPECIESNAME }}">

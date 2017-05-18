@@ -24,6 +24,8 @@ use Drupal\Core\Site\Settings;
 
 class ASMGateway
 {
+    const SPECIESNAME = 'SPECIESNAME';
+
     public static function getUrl()      { return \Drupal::config('asm.settings')->get('asm_url'); }
     public static function enableProxy() { return \Drupal::config('asm.settings')->get('asm_proxy') ? true : false; }
 
@@ -44,9 +46,10 @@ class ASMGateway
     }
 
     /**
-     * @return array The JSON data from the response
+     * @param  array  $fields An array of key,values to filter results
+     * @return array          The JSON data from the response
      */
-    public static function animals()
+    public static function animals(array $fields=null)
     {
         $config = \Drupal::config('asm.settings');
         $ASM    = $config->get('asm_url');
@@ -55,7 +58,28 @@ class ASMGateway
             'username' => $config->get('asm_user'),
             'password' => $config->get('asm_pass')
         ], '', '&');
-        return self::doJsonQuery($url);
+        $results = self::doJsonQuery($url);
+        if ($fields) {
+            foreach ($results as $i=>$row) {
+                foreach ($fields as $k=>$v) {
+                    switch ($k) {
+                        case self::SPECIESNAME:
+                            switch ($v) {
+                                case 'Cat':
+                                case 'Dog':
+                                    if ($row[$k] != $v) { unset($results[$i]); }
+                                break;
+
+                                case 'Other':
+                                    if ($row[$k]=='Cat' || $row[$k]=='Dog') { unset($results[$i]); }
+                                break;
+                            }
+                        break;
+                    }
+                }
+            }
+        }
+        return $results;
     }
 
     /**

@@ -22,6 +22,7 @@ namespace Drupal\asm\Controller;
 
 use Drupal\asm\ASMGateway;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Form\FormState;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -31,11 +32,22 @@ class ASMController extends ControllerBase
 
     public function animals()
     {
+        $fields     = null;
+        $form_state = new FormState();
+        $form_state->setAlwaysProcess(true);
+        $form_state->setRebuild(true);
+
+        if (!empty($_GET['species'])) {
+            $form_state->set('species', $_GET['species']);
+            $fields = [ASMGateway::SPECIESNAME => $_GET['species']];
+        }
+        $form = \Drupal::formBuilder()->buildForm('Drupal\asm\Form\AnimalSearchForm', $form_state);
         return [
             '#theme'   => 'asm_animals',
-            '#animals' => ASMGateway::animals(),
+            '#animals' => ASMGateway::animals($fields),
             '#asm_url' => ASMGateway::getUrl(),      // Set in module configuration
-            '#proxy'   => ASMGateway::enableProxy()  // True or False, based on configuration
+            '#proxy'   => ASMGateway::enableProxy(), // True or False, based on configuration
+            '#form'    => $form
         ];
     }
 
