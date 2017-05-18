@@ -32,6 +32,7 @@
         <h2>Adoptable Animals</h2>
     </header>
     {{ form }}
+    <div>
     {% for a in animals %}
     <a href="{{ path('asm.animal', {'animal_id': a.ID}) }}">
         <article class="{{ a.SPECIESNAME }}">
@@ -46,4 +47,5 @@
         </article>
     </a>
     {% endfor %}
+    </div>
 </section>
