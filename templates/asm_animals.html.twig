@@ -34,8 +34,8 @@
     {{ form }}
     <div>
     {% for a in animals %}
-    <a href="{{ path('asm.animal', {'animal_id': a.ID}) }}">
-        <article class="{{ a.SPECIESNAME }}">
+    <article class="{{ a.SPECIESNAME }}">
+        <a href="{{ path('asm.animal', {'animal_id': a.ID}) }}">
             <header><h3>{{ a.ANIMALNAME }}</h3></header>
             {% if a.WEBSITEIMAGECOUNT %}
                 {% if proxy %}
@@ -44,8 +44,8 @@
                     <img src="{{ asm_url }}/service?method=animal_image;animalid={{ a.ID }}" />
                 {% endif %}
             {% endif %}
-        </article>
-    </a>
+        </a>
+    </article>
     {% endfor %}
     </div>
 </section>
