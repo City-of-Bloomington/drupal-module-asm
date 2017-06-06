@@ -75,6 +75,12 @@ class SettingsForm extends ConfigFormBase
             '#default_value' => $config->get('asm_breadcrumb'),
             '#description'   => 'Enter node IDs, separated by commas, to be used as the base breadcrumb for ASM routes'
         ];
+        $form['asm_route'] = [
+            '#type'          => 'textfield',
+            '#title'         => 'Base Route',
+            '#default_value' => $config->get('asm_route'),
+            '#description'   => "Specify an alias to use as the base for this module's routes"
+        ];
 
         return parent::buildForm($form, $form_state);
     }
@@ -90,6 +96,7 @@ class SettingsForm extends ConfigFormBase
              ->set('asm_pass',       $form_state->getValue('asm_pass'))
              ->set('asm_proxy',      $form_state->getValue('asm_proxy') ? 1 : 0)
              ->set('asm_breadcrumb', $form_state->getValue('asm_breadcrumb'))
+             ->set('asm_route',      $form_state->getValue('asm_route'))
              ->save();
 
         parent::submitForm($form, $form_state);

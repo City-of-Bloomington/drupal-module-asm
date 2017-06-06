@@ -24,26 +24,6 @@ asm.settings:
   requirements:
     _permission: 'administer site configuration'
 
-asm.image:
-  path: 'asm/animals/{animal_id}/image'
-  defaults:
-    _controller: '\Drupal\asm\Controller\ASMController::image'
-  requirements:
-    _permission: 'access content'
-
-asm.animal:
-  path: 'asm/animals/{animal_id}'
-  defaults:
-    _controller: '\Drupal\asm\Controller\ASMController::animal'
-    _title: 'Animal'
-  requirements:
-    _permission: 'access content'
-
-asm.animals:
-  path: 'asm/animals'
-  defaults:
-    _controller: '\Drupal\asm\Controller\ASMController::animals'
-    _title: 'Adoptable Animals'
-  requirements:
-    _permission: 'access content'
+route_callbacks:
+  - '\Drupal\asm\Routing\Routes::routes'
 ...
