@@ -30,9 +30,9 @@ class ASMController extends ControllerBase
 {
     const PROXY_CACHE = '/tmp/asm';
 
-    public function title(array $animal)
+    public function title(array $animal_id)
     {
-        return !empty($animal['ANIMALNAME']) ? $animal['ANIMALNAME'] : '';
+        return !empty($animal_id['ANIMALNAME']) ? $animal_id['ANIMALNAME'] : '';
     }
 
     public function animals()
@@ -60,11 +60,11 @@ class ASMController extends ControllerBase
      * @param array $animal  The JSON data from ASMGateway::animal()
      * @see https://www.drupal.org/docs/8/api/routing-system/parameter-upcasting-in-routes
      */
-    public function animal(array $animal)
+    public function animal(array $animal_id)
     {
         return [
             '#theme'   => 'asm_animal',
-            '#animal'  => $animal,
+            '#animal'  => $animal_id,
             '#asm_url' => ASMGateway::getUrl(),      // Set in module configuration
             '#proxy'   => ASMGateway::enableProxy()  // True or False, based on configuration
         ];
@@ -74,7 +74,7 @@ class ASMController extends ControllerBase
     {
         $animal_id = (int)$animal_id;
         $imagenum  = (int)$imagenum;
-        $cacheFile = self::PROXY_CACHE."/$animal_id";
+        $cacheFile = self::PROXY_CACHE."/$animal_id-$imagenum";
 
         if (!is_file($cacheFile)) {
             if (!is_dir(self::PROXY_CACHE)) {

@@ -41,17 +41,18 @@ class Routes
             ),
 
             'asm.animal' => new Route(
-                "$base/animals/{animal}",
+                "$base/animals/{animal_id}",
                 [
                     '_controller'     => '\Drupal\asm\Controller\ASMController::animal',
                     '_title_callback' => '\Drupal\asm\Controller\ASMController::title'
                 ],
                 [
-                    '_permission' => 'access content'
+                    '_permission' => 'access content',
+                    'animal_id'   => '^[0-9]+$'
                 ],
                 [
                     'parameters' => [
-                        'animal' => ['type' => 'animal_id']
+                        'animal_id' => ['type' => 'animal_id']
                     ]
                 ]
             ),
