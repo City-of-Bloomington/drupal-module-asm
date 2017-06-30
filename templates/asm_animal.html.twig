@@ -28,18 +28,22 @@
  */
 #}
 <section class="asm_animal">
-    <header><h2>{{ animal.ANIMALNAME }}</h2></header>
+    {% if animal.ANIMALCOMMENTS %}<p>{{ animal.ANIMALCOMMENTS }}</p>{% endif %}
     {% if animal.WEBSITEIMAGECOUNT %}
+    {% for n in 1..animal.WEBSITEIMAGECOUNT %}
         {% if proxy %}
-            <img src="{{ path('asm.image', {'animal_id': animal.ID}) }}" />
+            <img src="{{ path('asm.image', {'animal_id': animal.ID, 'imagenum': n}) }}" />
         {% else %}
-            <img src="{{ asm_url }}/service?method=animal_image;animalid={{ animal.ID }}" />
+            <img src="{{ asm_url }}/service?method=animal_image;animalid={{ animal.ID }};imagenum=n" />
         {% endif %}
+    {% endfor %}
     {% endif %}
     <ul><li>{{ animal.SPECIESNAME }}</li>
         <li>{{ animal.BREEDNAME }}</li>
         <li>{{ animal.SEXNAME }}</li>
         <li>{{ animal.AGEGROUP }}</li>
         <li>{{ animal.SIZENAME }}</li>
+        {% if animal.DECLAWED %}<li>Declawed</li>{% endif %}
+        {% if animal.HASSPECIALNEEDS %}<li>Special Needs</li>{% endif %}
     </ul>
 </section>

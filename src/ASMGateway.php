@@ -59,7 +59,7 @@ class ASMGateway
             'password' => $config->get('asm_pass')
         ], '', '&');
         $results = self::doJsonQuery($url);
-        if ($fields) {
+        if ($fields && $results) {
             foreach ($results as $i=>$row) {
                 foreach ($fields as $k=>$v) {
                     switch ($k) {

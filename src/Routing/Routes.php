@@ -32,19 +32,27 @@ class Routes
         if (!$base) { $base = '/asm'; }
         return [
             'asm.image' => new Route(
-                "$base/animals/{animal_id}/image",
-                [ '_controller' => '\Drupal\asm\Controller\ASMController::image', ],
+                "$base/animals/{animal_id}/image/{imagenum}",
+                [
+                    '_controller' => '\Drupal\asm\Controller\ASMController::image',
+                    'imagenum'    => 1
+                ],
                 [ '_permission' => 'access content' ]
             ),
 
             'asm.animal' => new Route(
-                "$base/animals/{animal_id}",
+                "$base/animals/{animal}",
                 [
-                    '_controller' => '\Drupal\asm\Controller\ASMController::animal',
-                    '_title'      => 'Animal'
+                    '_controller'     => '\Drupal\asm\Controller\ASMController::animal',
+                    '_title_callback' => '\Drupal\asm\Controller\ASMController::title'
                 ],
                 [
                     '_permission' => 'access content'
+                ],
+                [
+                    'parameters' => [
+                        'animal' => ['type' => 'animal_id']
+                    ]
                 ]
             ),
             'asm.animals' => new Route(
