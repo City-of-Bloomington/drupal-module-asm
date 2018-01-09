@@ -24,7 +24,13 @@ use Drupal\Core\Site\Settings;
 
 class ASMGateway
 {
-    const SPECIESNAME = 'SPECIESNAME';
+    const SPECIESNAME   = 'SPECIESNAME';
+    const SPECIES_CAT   = 'Cat';
+    const SPECIES_DOG   = 'Dog';
+    const SPECIES_OTHER = 'Other';
+
+    const DATE_BIRTH    = 'DATEOFBIRTH';
+    const AGE           = 'ANIMALAGE';
 
     public static function getUrl()      { return \Drupal::config('asm.settings')->get('asm_url'); }
     public static function enableProxy() { return \Drupal::config('asm.settings')->get('asm_proxy') ? true : false; }
@@ -65,13 +71,13 @@ class ASMGateway
                     switch ($k) {
                         case self::SPECIESNAME:
                             switch ($v) {
-                                case 'Cat':
-                                case 'Dog':
+                                case self::SPECIES_CAT:
+                                case self::SPECIES_DOG:
                                     if ($row[$k] != $v) { unset($results[$i]); }
                                 break;
 
-                                case 'Other':
-                                    if ($row[$k]=='Cat' || $row[$k]=='Dog') { unset($results[$i]); }
+                                case self::SPECIES_OTHER:
+                                    if ($row[$k]==self::SPECIES_CAT || $row[$k]==self::SPECIES_DOG) { unset($results[$i]); }
                                 break;
                             }
                         break;

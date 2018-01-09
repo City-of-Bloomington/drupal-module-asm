@@ -39,11 +39,11 @@
     {% endfor %}
     {% endif %}
     <ul><li>{{ animal.SPECIESNAME }}</li>
-        <li>{{ animal.BREEDNAME }}</li>
-        <li>{{ animal.SEXNAME }}</li>
-        <li>{{ animal.AGEGROUP }}</li>
-        <li>{{ animal.SIZENAME }}</li>
-        {% if animal.DECLAWED %}<li>Declawed</li>{% endif %}
-        {% if animal.HASSPECIALNEEDS %}<li>Special Needs</li>{% endif %}
+        <li>{{ animal.BREEDNAME   }}</li>
+        <li>{{ animal.SEXNAME     }}</li>
+        <li>{{ animal.ANIMALAGE   }}</li>
+        <li>{{ animal.SIZENAME    }}</li>
+        {% if  animal.DECLAWED %}<li>Declawed</li>{% endif %}
+        {% if  animal.HASSPECIALNEEDS %}<li>Special Needs</li>{% endif %}
     </ul>
 </section>
