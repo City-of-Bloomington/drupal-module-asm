@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
+ * @copyright 2017-2018 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/old-licenses/gpl-2.0 GNU/GPL2, see LICENSE
  *
  * This file is part of the ASM drupal module.
@@ -45,8 +45,7 @@ function asm_theme($existing, $type, $theme, $path)
             'variables' => [
                 'animals' => [],
                 'asm_url' => null,
-                'proxy'   => false,
-                'form'    => null
+                'proxy'   => false
             ]
         ],
         'asm_animal' => [

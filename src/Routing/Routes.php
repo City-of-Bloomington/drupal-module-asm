@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
+ * @copyright 2017-2018 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/old-licenses/gpl-2.0 GNU/GPL2, see LICENSE
  *
  * This file is part of the ASM drupal module.
@@ -57,13 +57,15 @@ class Routes
                 ]
             ),
             'asm.animals' => new Route(
-                "$base/animals",
+                "$base/animals/{species}",
                 [
                     '_controller' => '\Drupal\asm\Controller\ASMController::animals',
-                    '_title'      => 'Adoptable Animals'
+                    '_title'      => 'Adoptable Animals',
+                    'species'     => 'All'
                 ],
                 [
-                    '_permission' => 'access content'
+                    '_permission' => 'access content',
+                    'species'     => '^All|Cat|Dog|Other$'
                 ]
             )
         ];

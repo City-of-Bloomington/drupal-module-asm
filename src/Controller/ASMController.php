@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
+ * @copyright 2017-2018 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/old-licenses/gpl-2.0 GNU/GPL2, see LICENSE
  *
  * This file is part of the ASM drupal module.
@@ -22,7 +22,6 @@ namespace Drupal\asm\Controller;
 
 use Drupal\asm\ASMGateway;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Form\FormState;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -35,29 +34,23 @@ class ASMController extends ControllerBase
         return !empty($animal_id['ANIMALNAME']) ? $animal_id['ANIMALNAME'] : '';
     }
 
-    public function animals()
+    public function animals(string $species)
     {
         $fields     = null;
-        $form_state = new FormState();
-        $form_state->setAlwaysProcess(true);
-        $form_state->setRebuild(true);
-
-        if (!empty($_GET['species'])) {
-            $form_state->set('species', $_GET['species']);
-            $fields = [ASMGateway::SPECIESNAME => $_GET['species']];
+        if ($species != 'All') {
+            $fields = [ASMGateway::SPECIESNAME => $species];
         }
-        $form = \Drupal::formBuilder()->buildForm('Drupal\asm\Form\AnimalSearchForm', $form_state);
+
         return [
             '#theme'   => 'asm_animals',
             '#animals' => ASMGateway::animals($fields),
             '#asm_url' => ASMGateway::getUrl(),      // Set in module configuration
-            '#proxy'   => ASMGateway::enableProxy(), // True or False, based on configuration
-            '#form'    => $form
+            '#proxy'   => ASMGateway::enableProxy()  // True or False, based on configuration
         ];
     }
 
     /**
-     * @param array $animal  The JSON data from ASMGateway::animal()
+     * @param array $animal_id  The JSON data from ASMGateway::animal()
      * @see https://www.drupal.org/docs/8/api/routing-system/parameter-upcasting-in-routes
      */
     public function animal(array $animal_id)
