@@ -97,9 +97,12 @@ class ASMGateway
         $config = \Drupal::config('asm.settings');
         $ASM    = $config->get('asm_url');
         $url    = $ASM.'/service?'.http_build_query([
-            'method'   => 'animal_json',
-            'animalid' => (int)$animal_id
+            'method'   => 'json_adoptable_animal',
+            'animalid' => (int)$animal_id,
+            'username' => $config->get('asm_user'),
+            'password' => $config->get('asm_pass')
         ], '', '&');
-        return self::doJsonQuery($url);
+        $json = self::doJsonQuery($url);
+        return $json[0];
     }
 }
