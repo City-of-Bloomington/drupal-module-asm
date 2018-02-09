@@ -6,6 +6,9 @@ The ASM module provides read-only integration with Animal Shelter Manager.
 * https://github.com/bobintetley/asm3
 * http://sheltermanager.com
 
+## Requirements
+This module is written to work with v40 of the Animal Shelter Manager.  Shelter Manager's web services changed from v39 to v40.
+
 ## Installation
 We recommend using composer for installing this module.  Right now, this module is still a sandbox project, so you will need to explicitly add this repository to your composer.json.
 

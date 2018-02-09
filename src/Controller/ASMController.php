@@ -29,57 +29,72 @@ class ASMController extends ControllerBase
 {
     const PROXY_CACHE = '/tmp/asm';
 
-    public function title(array $animal_id)
+    public function title(int $animal_id)
     {
-        return !empty($animal_id['ANIMALNAME']) ? $animal_id['ANIMALNAME'] : '';
+        $animal = ASMGateway::adoptable_animal($animal_id);
+        return !empty($animal['ANIMALNAME']) ? $animal['ANIMALNAME'] : '';
     }
 
-    public function animals(string $species)
+    private static function filterForSpecies(string $species)
     {
         $fields     = null;
         if ($species != 'All') {
             $fields = [ASMGateway::SPECIESNAME => $species];
         }
+        return $fields;
+    }
 
+    public function adoptable_animals(string $species)
+    {
         return [
-            '#theme'   => 'asm_animals',
-            '#animals' => ASMGateway::animals($fields),
+            '#theme'   => 'asm_adoptable_animals',
+            '#animals' => ASMGateway::adoptable_animals(self::filterForSpecies($species)),
             '#asm_url' => ASMGateway::getUrl(),      // Set in module configuration
             '#proxy'   => ASMGateway::enableProxy()  // True or False, based on configuration
         ];
     }
 
-    /**
-     * @param array $animal_id  The JSON data from ASMGateway::animal()
-     * @see https://www.drupal.org/docs/8/api/routing-system/parameter-upcasting-in-routes
-     */
-    public function animal(array $animal_id)
+    public function adoptable_animal(int $animal_id)
     {
         return [
-            '#theme'   => 'asm_animal',
-            '#animal'  => $animal_id,
+            '#theme'   => 'asm_adoptable_animal',
+            '#animal'  => ASMGateway::adoptable_animal($animal_id),
             '#asm_url' => ASMGateway::getUrl(),      // Set in module configuration
             '#proxy'   => ASMGateway::enableProxy()  // True or False, based on configuration
         ];
     }
 
-    public function image($animal_id, $imagenum)
+    public function found_animal(int $lfid)
     {
-        $animal_id = (int)$animal_id;
-        $imagenum  = (int)$imagenum;
-        $cacheFile = self::PROXY_CACHE."/$animal_id-$imagenum";
+        return [
+            '#theme'   => 'asm_found_animal',
+            '#animal'  => ASMGateway::found_animal($lfid),
+            '#asm_url' => ASMGateway::getUrl(),
+            '#proxy'   => ASMGateway::enableProxy()
+        ];
+    }
+
+    public function found_animals(string $species)
+    {
+        return [
+            '#theme'   => 'asm_found_animals',
+            '#animals' => ASMGateway::found_animals(self::filterForSpecies($species)),
+            '#asm_url' => ASMGateway::getUrl(),
+            '#proxy'   => ASMGateway::enableProxy()
+        ];
+    }
+
+    private function proxyImage(string $url, string $uniqid)
+    {
+        $cacheFile = self::PROXY_CACHE."/$uniqid";
 
         if (!is_file($cacheFile)) {
             if (!is_dir(self::PROXY_CACHE)) {
                   mkdir(self::PROXY_CACHE);
             }
-
-            $url = ASMGateway::getUrl()."/service?method=animal_image&animalid=$animal_id";
-            if ($imagenum > 1) { $url.="&seq=$imagenum"; }
-
             try {
                 $client = \Drupal::httpClient();
-                $response = $client->request('GET', $url, ['sink'=>$cacheFile]);
+                $client->request('GET', $url, ['sink'=>$cacheFile]);
             }
             catch (\Exception $e) {
                 throw new NotFoundHttpException();
@@ -92,4 +107,23 @@ class ASMController extends ControllerBase
 
         return new BinaryFileResponse($cacheFile, 200, $headers);
     }
+
+    public function image(int $animal_id, int $imagenum)
+    {
+        $uniqid = "$animal_id-$imagenum";
+
+        $url = ASMGateway::getUrl()."/service?method=animal_image&animalid=$animal_id";
+        if ($imagenum > 1) { $url.="&seq=$imagenum"; }
+
+        return $this->proxyImage($url, $uniqid);
+    }
+
+    public function media(int $media_id)
+    {
+        return $this->proxyImage(
+            ASMGateway::getUrl()."/service?method=dbfs_image&title=$media_id.jpg",
+            "media-$media_id"
+        );
+    }
+
 }

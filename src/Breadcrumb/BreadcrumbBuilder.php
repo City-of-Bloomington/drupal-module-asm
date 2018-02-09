@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
+ * @copyright 2017-2018 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/old-licenses/gpl-2.0 GNU/GPL2, see LICENSE
  *
  * This file is part of the ASM drupal module.
@@ -35,7 +35,7 @@ class BreadcrumbBuilder implements BreadcrumbBuilderInterface
 
     public function build(RouteMatchInterface $route_match)
     {
-        list($module, $action) = explode('.', $route_match->getRouteName());
+        $route      = $route_match->getRouteName();
         $breadcrumb = new Breadcrumb();
         $breadcrumb->addCacheContexts(['url']);
         $breadcrumb->addLink(Link::createFromRoute('Home', '<front>'));
@@ -46,8 +46,11 @@ class BreadcrumbBuilder implements BreadcrumbBuilderInterface
         foreach ($nodes as $n) {
             $breadcrumb->addLink(Link::createFromRoute($n->title->value, 'entity.node.canonical', ['node'=>$n->nid->value]));
         }
-        if ($action == 'animal') {
-            $breadcrumb->addLink(Link::createFromRoute('Animals', 'asm.animals'));
+        if ($route == 'asm.adoptable_animal') {
+            $breadcrumb->addLink(Link::createFromRoute('Animals', 'asm.adoptable_animals'));
+        }
+        if ($route == 'asm.found_animal') {
+            $breadcrumb->addLink(Link::createFromRoute('Found Animals', 'asm.found_animals'));
         }
 
         return $breadcrumb;

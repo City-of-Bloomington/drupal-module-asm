@@ -40,21 +40,37 @@ function asm_help($route_name, RouteMatchInterface $route_match)
 function asm_theme($existing, $type, $theme, $path)
 {
     return [
-        'asm_animals' => [
-            'template'  => 'asm_animals',
+        'asm_adoptable_animals' => [
+            'template'  => 'asm_adoptable_animals',
             'variables' => [
                 'animals' => [],
                 'asm_url' => null,
                 'proxy'   => false
             ]
         ],
-        'asm_animal' => [
-            'template'  => 'asm_animal',
+        'asm_adoptable_animal' => [
+            'template'  => 'asm_adoptable_animal',
             'variables' => [
                 'animal'  => [],
                 'asm_url' => null,
                 'proxy'   => false
             ]
-        ]
+        ],
+        'asm_found_animals' => [
+            'template' => 'asm_found_animals',
+            'variables' => [
+                'animals' => [],
+                'asm_url' => null,
+                'proxy'   => false
+            ]
+        ],
+        'asm_found_animal' => [
+            'template' => 'asm_found_animal',
+            'variables' => [
+                'animal'  => [],
+                'asm_url' => null,
+                'proxy'   => false
+            ]
+        ],
     ];
 }

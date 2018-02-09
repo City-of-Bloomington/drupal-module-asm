@@ -1,0 +1,56 @@
+{#
+/**
+ * @file
+ * Displays the list of Adoptable Animals from Shelter Manager
+ *
+ * Available variables
+ * - animals: The animals JSON data from Shelter Manager
+ * - asm_url: Base URL for Shelter Manager
+ * - proxy:   Whether to proxy images, or not
+ *
+ * @copyright 2017-2018 City of Bloomington, Indiana
+ * @license https://www.gnu.org/licenses/old-licenses/gpl-2.0 GNU/GPL2, see LICENSE
+ *
+ * This file is part of the ASM drupal module.
+ *
+ * The ASM module is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * The ASM module is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with the ASM module.  If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0/>.
+ */
+#}
+<section class="asm_animals">
+    <header>
+        <h2>Adoptable Animals</h2>
+    </header>
+    <div>
+        <a href="{{ path('asm.adoptable_animals') }}">All</a>
+        <a href="{{ path('asm.adoptable_animals', {'species': 'Cat'  }) }}">Cats</a>
+        <a href="{{ path('asm.adoptable_animals', {'species': 'Dog'  }) }}">Dogs</a>
+        <a href="{{ path('asm.adoptable_animals', {'species': 'Other'}) }}">Other</a>
+    </div>
+    <div>
+    {% for a in animals %}
+    <article class="{{ a.SPECIESNAME }}">
+        <a href="{{ path('asm.adoptable_animal', {'animal_id': a.ID}) }}">
+            <header><h3>{{ a.ANIMALNAME }}</h3></header>
+            {% if a.WEBSITEIMAGECOUNT %}
+                {% if proxy %}
+                    <img src="{{ path('asm.image', {'animal_id': a.ID}) }}" />
+                {% else %}
+                    <img src="{{ asm_url }}/service?method=animal_image;animalid={{ a.ID }}" />
+                {% endif %}
+            {% endif %}
+        </a>
+    </article>
+    {% endfor %}
+    </div>
+</section>

@@ -1,0 +1,46 @@
+{#
+/**
+ * @file
+ * Displays an animal from the Animal Shelter Manager
+ *
+ * Available variables
+ * - animal:  The animal data from JSON
+ * - asm_url: Base URL for Shelter Manager
+ * - proxy:   Whether to proxy images, or not
+ *
+ * @copyright 2018 City of Bloomington, Indiana
+ * @license https://www.gnu.org/licenses/old-licenses/gpl-2.0 GNU/GPL2, see LICENSE
+ *
+ * This file is part of the ASM drupal module.
+ *
+ * The ASM module is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * The ASM module is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with the ASM module.  If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0/>.
+ */
+#}
+<section class="asm_animal">
+    {% if animal.AREAFOUND %}<p>{{ animal.AREAFOUND }}</p>{% endif %}
+    {% if animal.COMMENTS  %}<p>{{ animal.COMMENTS  }}</p>{% endif %}
+    {% if animal.WEBSITEMEDIAID %}
+        {% if proxy %}
+            <img src="{{ path('asm.media', {'media_id': animal.WEBSITEMEDIAID}) }}" />
+        {% else %}
+            <img src="{{ asm_url }}/service?method=dbfs_image&amp;title={{ animal.WEBSITEMEDIAID }}.jpg" />
+        {% endif %}
+    {% endif %}
+    <ul>{% if animal.SPECIESNAME   %}<li>{{ animal.SPECIESNAME   }}</li>{% endif %}
+        {% if animal.BREEDNAME     %}<li>{{ animal.BREEDNAME     }}</li>{% endif %}
+        {% if animal.SEXNAME       %}<li>{{ animal.SEXNAME       }}</li>{% endif %}
+        {% if animal.AGEGROUP      %}<li>{{ animal.AGEGROUP      }}</li>{% endif %}
+        {% if animal.BASECOLORNAME %}<li>{{ animal.BASECOLORNAME }}</li>{% endif %}
+    </ul>
+</section>

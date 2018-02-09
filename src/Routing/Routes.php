@@ -39,11 +39,24 @@ class Routes
                 ],
                 [ '_permission' => 'access content' ]
             ),
+            'asm.media' => new Route(
+                "$base/media/{media_id}",
+                ['_controller'  => '\Drupal\asm\Controller\ASMController::media'],
+                [
+                    '_permission' => 'access content',
+                    'media_id'    => '^[0-9]+$'
+                ],
+                [
+                    'parameters' => [
+                        'media_id' => ['type' => 'Integer']
+                    ]
+                ]
+            ),
 
-            'asm.animal' => new Route(
+            'asm.adoptable_animal' => new Route(
                 "$base/animals/{animal_id}",
                 [
-                    '_controller'     => '\Drupal\asm\Controller\ASMController::animal',
+                    '_controller'     => '\Drupal\asm\Controller\ASMController::adoptable_animal',
                     '_title_callback' => '\Drupal\asm\Controller\ASMController::title'
                 ],
                 [
@@ -52,15 +65,43 @@ class Routes
                 ],
                 [
                     'parameters' => [
-                        'animal_id' => ['type' => 'animal_id']
+                        'animal_id' => ['type' => 'Integer']
                     ]
                 ]
             ),
-            'asm.animals' => new Route(
+            'asm.adoptable_animals' => new Route(
                 "$base/animals/{species}",
                 [
-                    '_controller' => '\Drupal\asm\Controller\ASMController::animals',
+                    '_controller' => '\Drupal\asm\Controller\ASMController::adoptable_animals',
                     '_title'      => 'Adoptable Animals',
+                    'species'     => 'All'
+                ],
+                [
+                    '_permission' => 'access content',
+                    'species'     => '^All|Cat|Dog|Other$'
+                ]
+            ),
+            'asm.found_animal' => new Route(
+                "$base/found/{lfid}",
+                [
+                    '_controller' => '\Drupal\asm\Controller\ASMController::found_animal',
+                    '_title'      => 'Found Animals'
+                ],
+                [
+                    '_permission' => 'access content',
+                    'lfid'        => '^[0-9]+$'
+                ],
+                [
+                    'parameters' => [
+                        'lfid' => ['type' => 'Integer']
+                    ]
+                ]
+            ),
+            'asm.found_animals' => new Route(
+                "$base/found/{species}",
+                [
+                    '_controller' => '\Drupal\asm\Controller\ASMController::found_animals',
+                    '_title'      => 'Found Animals',
                     'species'     => 'All'
                 ],
                 [

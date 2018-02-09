@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
+ * @copyright 2017-2018 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/old-licenses/gpl-2.0 GNU/GPL2, see LICENSE
  *
  * This file is part of the ASM drupal module.
@@ -19,8 +19,6 @@
  * along with the ASM module.  If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0/>.
  */
 namespace Drupal\asm;
-
-use Drupal\Core\Site\Settings;
 
 class ASMGateway
 {
@@ -51,11 +49,33 @@ class ASMGateway
         }
     }
 
+    private static function filter(array &$results, array $fields)
+    {
+        foreach ($results as $i=>$row) {
+            foreach ($fields as $k=>$v) {
+                switch ($k) {
+                    case self::SPECIESNAME:
+                        switch ($v) {
+                            case self::SPECIES_CAT:
+                            case self::SPECIES_DOG:
+                                if ($row[$k] != $v) { unset($results[$i]); }
+                            break;
+
+                            case self::SPECIES_OTHER:
+                                if ($row[$k]==self::SPECIES_CAT || $row[$k]==self::SPECIES_DOG) { unset($results[$i]); }
+                            break;
+                        }
+                    break;
+                }
+            }
+        }
+    }
+
     /**
      * @param  array  $fields An array of key,values to filter results
      * @return array          The JSON data from the response
      */
-    public static function animals(array $fields=null)
+    public static function adoptable_animals(array $fields=null)
     {
         $config = \Drupal::config('asm.settings');
         $ASM    = $config->get('asm_url');
@@ -66,24 +86,7 @@ class ASMGateway
         ], '', '&');
         $results = self::doJsonQuery($url);
         if ($fields && $results) {
-            foreach ($results as $i=>$row) {
-                foreach ($fields as $k=>$v) {
-                    switch ($k) {
-                        case self::SPECIESNAME:
-                            switch ($v) {
-                                case self::SPECIES_CAT:
-                                case self::SPECIES_DOG:
-                                    if ($row[$k] != $v) { unset($results[$i]); }
-                                break;
-
-                                case self::SPECIES_OTHER:
-                                    if ($row[$k]==self::SPECIES_CAT || $row[$k]==self::SPECIES_DOG) { unset($results[$i]); }
-                                break;
-                            }
-                        break;
-                    }
-                }
-            }
+            self::filter($results, $fields);
         }
         return $results;
     }
@@ -92,17 +95,52 @@ class ASMGateway
      * @param  int   $animal_id The Animal ID
      * @return array            The JSON data from the response
      */
-    public static function animal($animal_id)
+    public static function adoptable_animal(int $animal_id)
+    {
+        static $cache = [];
+
+        if (empty($cache[$animal_id]))  {
+            $config = \Drupal::config('asm.settings');
+            $ASM    = $config->get('asm_url');
+            $url    = $ASM.'/service?'.http_build_query([
+                'method'   => 'json_adoptable_animal',
+                'animalid' => $animal_id,
+                'username' => $config->get('asm_user'),
+                'password' => $config->get('asm_pass')
+            ], '', '&');
+            $json = self::doJsonQuery($url);
+            $cache[$animal_id] = $json[0];
+        }
+        return $cache[$animal_id];
+    }
+
+    public static function found_animals(array $fields=null)
     {
         $config = \Drupal::config('asm.settings');
         $ASM    = $config->get('asm_url');
         $url    = $ASM.'/service?'.http_build_query([
-            'method'   => 'json_adoptable_animal',
-            'animalid' => (int)$animal_id,
+            'method'   => 'json_found_animals',
             'username' => $config->get('asm_user'),
             'password' => $config->get('asm_pass')
         ], '', '&');
-        $json = self::doJsonQuery($url);
-        return $json[0];
+        $results = self::doJsonQuery($url);
+        if ($fields && $results) {
+            self::filter($results, $fields);
+        }
+        return $results;
+    }
+
+    /**
+     * @param  int   $lfid The Lost & Found ID for a found animal
+     * @return array       The JSON data array from response
+     */
+    public static function found_animal(int $lfid=null)
+    {
+        $animals = self::found_animals();
+        foreach ($animals as $a) {
+            if ($a['LFID'] == $lfid) {
+                return $a;
+            }
+        }
     }
 }
