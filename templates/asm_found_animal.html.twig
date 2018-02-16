@@ -37,10 +37,11 @@
             <img src="{{ asm_url }}/service?method=dbfs_image&amp;title={{ animal.WEBSITEMEDIAID }}.jpg" />
         {% endif %}
     {% endif %}
-    <ul>{% if animal.SPECIESNAME   %}<li>{{ animal.SPECIESNAME   }}</li>{% endif %}
-        {% if animal.BREEDNAME     %}<li>{{ animal.BREEDNAME     }}</li>{% endif %}
-        {% if animal.SEXNAME       %}<li>{{ animal.SEXNAME       }}</li>{% endif %}
-        {% if animal.AGEGROUP      %}<li>{{ animal.AGEGROUP      }}</li>{% endif %}
-        {% if animal.BASECOLORNAME %}<li>{{ animal.BASECOLORNAME }}</li>{% endif %}
-    </ul>
+    <table>
+        {% if animal.SPECIESNAME   %}<tr><th>Species</th><td>{{ animal.SPECIESNAME   }}</td></tr>{% endif %}
+        {% if animal.BREEDNAME     %}<tr><th>Breed  </th><td>{{ animal.BREEDNAME     }}</td></tr>{% endif %}
+        {% if animal.SEXNAME       %}<tr><th>Sex    </th><td>{{ animal.SEXNAME       }}</td></tr>{% endif %}
+        {% if animal.AGEGROUP      %}<tr><th>Age    </th><td>{{ animal.AGEGROUP      }}</td></tr>{% endif %}
+        {% if animal.BASECOLORNAME %}<tr><th>Color  </th><td>{{ animal.BASECOLORNAME }}</td></tr>{% endif %}
+    </table>
 </section>
