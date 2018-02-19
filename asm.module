@@ -19,7 +19,6 @@
  * along with the ASM module.  If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0/>.
  */
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\asm\ASMGateway;
 
 /**
  * @implements hook_help()
@@ -56,16 +55,18 @@ function asm_theme($existing, $type, $theme, $path)
                 'proxy'   => false
             ]
         ],
-        'asm_found_animals' => [
-            'template' => 'asm_found_animals',
+        'asm_lf_animals' => [
+            'template' => 'asm_lf_animals',
             'variables' => [
                 'animals' => [],
                 'asm_url' => null,
-                'proxy'   => false
+                'proxy'   => false,
+                'title'   => '',
+                'mode'    => '' # lost || found
             ]
         ],
-        'asm_found_animal' => [
-            'template' => 'asm_found_animal',
+        'asm_lf_animal' => [
+            'template' => 'asm_lf_animal',
             'variables' => [
                 'animal'  => [],
                 'asm_url' => null,

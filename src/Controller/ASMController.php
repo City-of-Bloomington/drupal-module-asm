@@ -28,6 +28,8 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 class ASMController extends ControllerBase
 {
     const PROXY_CACHE = '/tmp/asm';
+    const MODE_LOST   = 'lost';
+    const MODE_FOUND  = 'found';
 
     public function title(int $animal_id)
     {
@@ -67,8 +69,8 @@ class ASMController extends ControllerBase
     public function found_animal(int $lfid)
     {
         return [
-            '#theme'   => 'asm_found_animal',
-            '#animal'  => ASMGateway::found_animal($lfid),
+            '#theme'   => 'asm_lf_animal',
+            '#animal'  => ASMGateway::lf_animal(ASMGateway::MODE_FOUND, $lfid),
             '#asm_url' => ASMGateway::getUrl(),
             '#proxy'   => ASMGateway::enableProxy()
         ];
@@ -77,10 +79,34 @@ class ASMController extends ControllerBase
     public function found_animals(string $species)
     {
         return [
-            '#theme'   => 'asm_found_animals',
-            '#animals' => ASMGateway::found_animals(self::filterForSpecies($species)),
+            '#theme'   => 'asm_lf_animals',
+            '#animals' => ASMGateway::lf_animals(ASMGateway::MODE_FOUND, self::filterForSpecies($species)),
+            '#asm_url' => ASMGateway::getUrl(),
+            '#proxy'   => ASMGateway::enableProxy(),
+            '#title'   => 'Found Animals',
+            '#mode'    => ASMGateway::MODE_FOUND
+        ];
+    }
+    
+    public function lost_animal(int $lfid)
+    {
+        return [
+            '#theme'   => 'asm_lf_animal',
+            '#animal'  => ASMGateway::lf_animal(ASMGateway::MODE_LOST, $lfid),
             '#asm_url' => ASMGateway::getUrl(),
             '#proxy'   => ASMGateway::enableProxy()
+        ];
+    }
+
+    public function lost_animals(string $species)
+    {
+        return [
+            '#theme'   => 'asm_lf_animals',
+            '#animals' => ASMGateway::lf_animals(ASMGateway::MODE_LOST, self::filterForSpecies($species)),
+            '#asm_url' => ASMGateway::getUrl(),
+            '#proxy'   => ASMGateway::enableProxy(),
+            '#title'   => 'Lost Animals',
+            '#mode'    => ASMGateway::MODE_LOST
         ];
     }
 

@@ -85,7 +85,7 @@ class Routes
                 "$base/found/{lfid}",
                 [
                     '_controller' => '\Drupal\asm\Controller\ASMController::found_animal',
-                    '_title'      => 'Found Animals'
+                    '_title'      => 'Found Animal'
                 ],
                 [
                     '_permission' => 'access content',
@@ -102,6 +102,34 @@ class Routes
                 [
                     '_controller' => '\Drupal\asm\Controller\ASMController::found_animals',
                     '_title'      => 'Found Animals',
+                    'species'     => 'All'
+                ],
+                [
+                    '_permission' => 'access content',
+                    'species'     => '^All|Cat|Dog|Other$'
+                ]
+            ),
+            'asm.lost_animal' => new Route(
+                "$base/lost/{lfid}",
+                [
+                    '_controller' => '\Drupal\asm\Controller\ASMController::lost_animal',
+                    '_title'      => 'Lost Animal'
+                ],
+                [
+                    '_permission' => 'access content',
+                    'lfid'        => '^[0-9]+$'
+                ],
+                [
+                    'parameters' => [
+                        'lfid' => ['type' => 'Integer']
+                    ]
+                ]
+            ),
+            'asm.lost_animals' => new Route(
+                "$base/lost/{species}",
+                [
+                    '_controller' => '\Drupal\asm\Controller\ASMController::lost_animals',
+                    '_title'      => 'Lost Animals',
                     'species'     => 'All'
                 ],
                 [

@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with the ASM module.  If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0/>.
  */
+declare (strict_types=1);
 namespace Drupal\asm;
 
 class ASMGateway
@@ -26,6 +27,9 @@ class ASMGateway
     const SPECIES_CAT   = 'Cat';
     const SPECIES_DOG   = 'Dog';
     const SPECIES_OTHER = 'Other';
+    
+    const MODE_LOST     = 'lost';
+    const MODE_FOUND    = 'found';
 
     const DATE_BIRTH    = 'DATEOFBIRTH';
     const AGE           = 'ANIMALAGE';
@@ -42,7 +46,7 @@ class ASMGateway
         $client = \Drupal::httpClient();
         try {
             $response = $client->get($url);
-            return json_decode($response->getBody(), true);
+            return json_decode($response->getBody()->__toString(), true);
         }
         catch (\Exception $e) {
             return [];
@@ -114,12 +118,16 @@ class ASMGateway
         return $cache[$animal_id];
     }
 
-    public static function found_animals(array $fields=null)
+    /**
+     * @param  string $mode  'lost' || 'found'
+     * @return array
+     */
+    public static function lf_animals(string $mode, array $fields=null)
     {
         $config = \Drupal::config('asm.settings');
         $ASM    = $config->get('asm_url');
         $url    = $ASM.'/service?'.http_build_query([
-            'method'   => 'json_found_animals',
+            'method'   => $mode == self::MODE_LOST ? 'json_lost_animals' : 'json_found_animals',
             'username' => $config->get('asm_user'),
             'password' => $config->get('asm_pass')
         ], '', '&');
@@ -134,9 +142,9 @@ class ASMGateway
      * @param  int   $lfid The Lost & Found ID for a found animal
      * @return array       The JSON data array from response
      */
-    public static function found_animal(int $lfid=null)
+    public static function lf_animal(string $mode, int $lfid=null)
     {
-        $animals = self::found_animals();
+        $animals = self::lf_animals($mode);
         foreach ($animals as $a) {
             if ($a['LFID'] == $lfid) {
                 return $a;
