@@ -28,6 +28,7 @@
  */
 #}
 <section class="asm_animal">
+{% if animal is not empty %}
     {% if animal.ANIMALCOMMENTS %}<p>{{ animal.ANIMALCOMMENTS }}</p>{% endif %}
     {% if animal.WEBSITEIMAGECOUNT %}
     {% for n in 1..animal.WEBSITEIMAGECOUNT %}
@@ -47,4 +48,5 @@
         {% if  animal.DECLAWED        %}<tr><th>Declawed     </th><td>Declawed     </td></tr>{% endif %}
         {% if  animal.HASSPECIALNEEDS %}<tr><th>Special Needs</th><td>Special Needs</td></tr>{% endif %}
     </table>
+{% endif %}
 </section>

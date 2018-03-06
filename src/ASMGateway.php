@@ -27,7 +27,7 @@ class ASMGateway
     const SPECIES_CAT   = 'Cat';
     const SPECIES_DOG   = 'Dog';
     const SPECIES_OTHER = 'Other';
-    
+
     const MODE_LOST     = 'lost';
     const MODE_FOUND    = 'found';
 
@@ -44,13 +44,8 @@ class ASMGateway
     private static function doJsonQuery($url)
     {
         $client = \Drupal::httpClient();
-        try {
-            $response = $client->get($url);
-            return json_decode($response->getBody()->__toString(), true);
-        }
-        catch (\Exception $e) {
-            return [];
-        }
+        $response = $client->get($url);
+        return json_decode($response->getBody()->__toString(), true);
     }
 
     private static function filter(array &$results, array $fields)
@@ -113,7 +108,7 @@ class ASMGateway
                 'password' => $config->get('asm_pass')
             ], '', '&');
             $json = self::doJsonQuery($url);
-            $cache[$animal_id] = $json[0];
+            $cache[$animal_id] = isset($json[0]) ? $json[0] : [];
         }
         return $cache[$animal_id];
     }
