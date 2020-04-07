@@ -69,6 +69,12 @@ class SettingsForm extends ConfigFormBase
             '#default_value' => $config->get('asm_proxy') ? true : false,
             '#description'   => 'If Shelter Manager is behind a firewall, you can check this to have the ASM module proxy image requests'
         ];
+        $form['asm_cache'] = [
+            '#type'          => 'textfield',
+            '#title'         => 'Proxy Cache Directory',
+            '#default_value' => $config->get('asm_cache'),
+            '#description'   => 'When proxy is enabled, this module will download images from ASM and host them from this directory.'
+        ];
         $form['asm_breadcrumb'] = [
             '#type'          => 'textfield',
             '#title'         => 'Breadcrumbs',
@@ -95,6 +101,7 @@ class SettingsForm extends ConfigFormBase
              ->set('asm_user',       $form_state->getValue('asm_user'))
              ->set('asm_pass',       $form_state->getValue('asm_pass'))
              ->set('asm_proxy',      $form_state->getValue('asm_proxy') ? 1 : 0)
+             ->set('asm_cache',      $form_state->getValue('asm_cache'))
              ->set('asm_breadcrumb', $form_state->getValue('asm_breadcrumb'))
              ->set('asm_route',      $form_state->getValue('asm_route'))
              ->save();

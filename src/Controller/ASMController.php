@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017-2018 City of Bloomington, Indiana
+ * @copyright 2017-2020 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/old-licenses/gpl-2.0 GNU/GPL2, see LICENSE
  *
  * This file is part of the ASM drupal module.
@@ -27,7 +27,6 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ASMController extends ControllerBase
 {
-    const PROXY_CACHE = '/tmp/asm';
     const MODE_LOST   = 'lost';
     const MODE_FOUND  = 'found';
 
@@ -87,7 +86,7 @@ class ASMController extends ControllerBase
             '#mode'    => ASMGateway::MODE_FOUND
         ];
     }
-    
+
     public function lost_animal(int $lfid)
     {
         return [
@@ -112,11 +111,12 @@ class ASMController extends ControllerBase
 
     private function proxyImage(string $url, string $uniqid)
     {
-        $cacheFile = self::PROXY_CACHE."/$uniqid";
+        $cacheDir  = \Drupal::config('asm.settings')->get('asm_cache');
+        $cacheFile = "$cacheDir/$uniqid";
 
         if (!is_file($cacheFile)) {
-            if (!is_dir(self::PROXY_CACHE)) {
-                  mkdir(self::PROXY_CACHE);
+            if (!is_dir($cacheDir)) {
+                  mkdir($cacheDir);
             }
             try {
                 $client = \Drupal::httpClient();
@@ -151,5 +151,4 @@ class ASMController extends ControllerBase
             "media-$media_id"
         );
     }
-
 }
