@@ -35,10 +35,8 @@
     {% for a in animals %}
     <article class="{{ a.SPECIESNAME }}">
         <header>
-        {% if a.ANIMALNAME %}
-        <h2>{{ a.ANIMALNAME }}</h2>
-        {% endif %}
-        <h3>{{ a.BREEDNAME }}</h3></header>
+        <h2>{{ a.SHELTERCODE }}</h2>
+        <h3>{{ a.BASECOLOURNAME }} {{ a.BREEDNAME }}</h3></header>
         {% if a.WEBSITEMEDIAID %}
             {% if proxy %}
                 <img src="{{ path('asm.media', {'media_id': a.WEBSITEMEDIAID}) }}" />
@@ -46,6 +44,7 @@
                 <img src="{{ asm_url }}/service?method=dbfs_image&amp;title={{ a.WEBSITEMEDIAID }}.jpg" />
             {% endif %}
         {% endif %}
+        <p>{{ a.DISPLAYLOCATION }}</p>
     </article>
     {% endfor %}
     </div>
