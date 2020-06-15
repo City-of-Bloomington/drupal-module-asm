@@ -109,6 +109,16 @@ class ASMController extends ControllerBase
         ];
     }
 
+    public function held_animals()
+    {
+        return [
+            '#theme'   => 'asm_held_animals',
+            '#animals' => ASMGateway::held_animals(),
+            '#asm_url' => ASMGateway::getUrl(),
+            '#proxy'   => ASMGateway::enableProxy()
+        ];
+    }
+
     private function proxyImage(string $url, string $uniqid)
     {
         $cacheDir  = \Drupal::config('asm.settings')->get('asm_cache');

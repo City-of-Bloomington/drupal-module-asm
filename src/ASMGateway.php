@@ -146,4 +146,20 @@ class ASMGateway
             }
         }
     }
+
+    /**
+     * @return array       The JSON data array from response
+     */
+    public static function held_animals(): ?array
+    {
+        $config = \Drupal::config('asm.settings');
+        $ASM    = $config->get('asm_url');
+        $url    = $ASM.'/service?'.http_build_query([
+            'method'   => 'json_held_animals',
+            'username' => $config->get('asm_user'),
+            'password' => $config->get('asm_pass')
+        ], '', '&');
+        $results = self::doJsonQuery($url);
+        return $results;
+    }
 }

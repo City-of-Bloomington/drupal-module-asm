@@ -136,6 +136,16 @@ class Routes
                     '_permission' => 'access content',
                     'species'     => '^All|Cat|Dog|Other$'
                 ]
+            ),
+            'asm.held_animals' => new Route(
+                "$base/strays",
+                [
+                    '_controller' => '\Drupal\asm\Controller\ASMController::held_animals',
+                    '_title'      => 'Stray Animals'
+                ],
+                [
+                    '_permission' => 'access content'
+                ]
             )
         ];
     }

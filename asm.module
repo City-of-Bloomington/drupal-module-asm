@@ -74,6 +74,14 @@ function asm_theme($existing, $type, $theme, $path)
                 'proxy'   => false
             ]
         ],
+        'asm_held_animals' => [
+            'template'  => 'asm_held_animals',
+            'variables' => [
+                'animals' => [],
+                'asm_url' => null,
+                'proxy'   => false
+            ]
+        ],
     ];
 }
 
