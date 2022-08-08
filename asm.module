@@ -85,14 +85,14 @@ function asm_theme($existing, $type, $theme, $path)
     ];
 }
 
-/**
- * @implements hook_cache_flush
- * @see https://api.drupal.org/api/drupal/core%21core.api.php/function/hook_cache_flush/8.2.x
- */
-function asm_cache_flush()
-{
-    $cacheDir = \Drupal::config('asm.settings')->get('asm_cache');
-    if ($cacheDir) {
-        exec('rm -Rf '.escapeshellarg(escapeshellcmd($cacheDir)));
-    }
-}
+// /**
+//  * @implements hook_cache_flush
+//  * @see https://api.drupal.org/api/drupal/core%21core.api.php/function/hook_cache_flush/8.2.x
+//  */
+// function asm_cache_flush()
+// {
+//     $cacheDir = \Drupal::config('asm.settings')->get('asm_cache');
+//     if ($cacheDir) {
+//         exec('rm -Rf '.escapeshellarg(escapeshellcmd($cacheDir)));
+//     }
+// }
