@@ -1,4 +1,4 @@
-# @copyright 2017-2020 City of Bloomington, Indiana
+# @copyright 2017-2024 City of Bloomington, Indiana
 # @license https://www.gnu.org/licenses/old-licenses/gpl-2.0 GNU/GPL2, see LICENSE
 #
 # This file is part of the ASM drupal module.
@@ -20,7 +20,6 @@ name:        'Animal Shelter Manager'
 description: 'Integration with the Animal Shelter Manager web application'
 package:     'COB'
 type:        'module'
-core:        '8.x'
 configure:   'asm.settings'
-core_version_requirement: '^8||^9'
+core_version_requirement: '^9||^10'
 ...
